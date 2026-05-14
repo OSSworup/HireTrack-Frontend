@@ -1,15 +1,35 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { AuthLayout } from "../../layout/authLayout";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "../../../api/userService";
+import { useNavigate } from "react-router-dom";
 
 
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate=useNavigate();
+
+    const mutation=useMutation({
+        mutationFn:loginUser,
+        onSuccess:(data)=>{
+            localStorage.setItem("accesToken",data.data.token);
+            console.log("Login Successful");
+            navigate("/admin")
+        },
+        onError:(error)=>{
+            console.log("ERROR:-",error);
+        }
+    });
 
     function submit(event: React.SyntheticEvent) {
         event.preventDefault();
-        console.log(email, password);
+        const data={
+            "email":email,
+            "password":password
+        }
+        mutation.mutate(data);
     }
 
     return <AuthLayout>
