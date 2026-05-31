@@ -1,10 +1,11 @@
 import {
+  Autocomplete,
   Checkbox,
   FormControlLabel,
   Stack,
   TextField,
 } from "@mui/material";
-import type { UserFormType } from "../types/types";
+import type { RoleOption, UserFormType } from "../types/types";
 
 interface Props {
   form: UserFormType;
@@ -13,13 +14,16 @@ interface Props {
     value: UserFormType[K],
   ) => void;
 
-  passwordMessage:string
+  passwordMessage: string,
+
+  roleOptions: RoleOption[];
 }
 
 export default function UserForm({
   form,
   update,
-  passwordMessage
+  passwordMessage,
+  roleOptions,
 }: Props) {
   return (
     <Stack spacing={2} sx={{ pt: 1 }}>
@@ -48,6 +52,24 @@ export default function UserForm({
         value={form.password}
         onChange={(e) => update("password", e.target.value)}
         fullWidth
+      />
+
+      <Autocomplete
+        multiple
+        disableCloseOnSelect
+        options={roleOptions}
+        value={roleOptions.filter((role) => form.roleIds.includes(role.id))}
+        onChange={(_,value)=>update("roleIds",value.map((role)=>role.id))}
+        getOptionLabel={(option) => option.name}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Roles *"
+            size="small"
+            fullWidth
+          />
+        )}
       />
       <FormControlLabel
         label="Active user"

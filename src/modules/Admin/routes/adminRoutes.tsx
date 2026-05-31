@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import SideNavLayout from "../../../common/layout/sideNavLayout";
 import UserManagementPage from "../features/user/userManagement";
+import RoleManagementPage from "../features/role/roleManagement";
 
 
 export default function AdminRoutes() {
@@ -11,6 +12,12 @@ export default function AdminRoutes() {
                     path="users"
                     element={
                         <UserManagementPage/>
+                    }
+                />
+                <Route
+                    path="roles"
+                    element={
+                        <RoleManagementPage/>
                     }
                 />
             </Route>

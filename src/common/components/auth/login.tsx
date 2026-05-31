@@ -16,7 +16,7 @@ export function Login() {
         onSuccess:(data)=>{
             localStorage.setItem("accesToken",data.data.token);
             console.log("Login Successful");
-            navigate("/admin")
+            navigate("/admin/users")
         },
         onError:(error)=>{
             console.log("ERROR:-",error);

@@ -6,7 +6,7 @@ import type {
 } from "../types/types";
 
 export const getUsers = async (): Promise<User[]> => {
-  const response = await api.get<User[]>("/user/list");
+  const response = await api.get<User[]>("/user");
   return response.data;
 };
 
@@ -19,7 +19,7 @@ export const updateUser = async (
   id: string,
   data: UpdateUserInput
 ) => {
-  const response = await api.patch(`/user/update/${id}`, data);
+  const response = await api.patch(`/user/${id}`, data);
   return response.data;
 };
 
@@ -28,14 +28,20 @@ export const updatePassword = async (
   newPassword: string
 ) => {
   const response = await api.patch(
-    `/user/updatePassword/${id}`,
+    `/user/${id}/password`,
     { password: newPassword }
   );
 
   return response.data;
 };
 
+export const assignRole=async (id:string,roleIds:string[])=>{
+  const response=await api.patch(`/user/${id}/roles`,{roleIds});
+  return response.data;
+
+}
+
 export const deleteUser = async (id: string) => {
-  const response = await api.delete(`/user/delete/${id}`);
+  const response = await api.delete(`/user/${id}`);
   return response.data;
 };

@@ -4,8 +4,9 @@ import {
   getUsers,
   updateUser,
   updatePassword,
+  assignRole,
 } from "../api/user.api";
-import type { UpdateUserInput} from "../types/types";
+import type { UpdateUserInput } from "../types/types";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -22,6 +23,7 @@ export function useUsers() {
     mutationFn: createUser,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['users'] });
+      
     }
   });
 
@@ -53,7 +55,17 @@ export function useUsers() {
     },
   });
 
-    const deleteMutation = useMutation({
+  const roleMutation = useMutation({
+    mutationFn: ({
+      id,
+      roleIds
+    }: { id: string, roleIds: string[] }) => assignRole(id, roleIds),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+
+  const deleteMutation = useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['users'] });
@@ -69,6 +81,7 @@ export function useUsers() {
     updateUser: updateMutation.mutateAsync,
     updatePassword: passwordMutation.mutateAsync,
     deleteUser: deleteMutation.mutateAsync,
+    assignRole:roleMutation.mutateAsync,
 
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,

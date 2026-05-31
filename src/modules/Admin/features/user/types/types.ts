@@ -1,5 +1,5 @@
 
-export interface User{
+export interface User {
   id: string;
   email: string;
   name: string;
@@ -17,10 +17,16 @@ export interface UserFormType {
   password: string;
   name: string;
   isActive: boolean;
+  roleIds:string[];
 }
 
-export interface UpdateUserInput{
-  email?:string,
-  name?:string,
-  isActive?:boolean
+export interface RoleOption {
+  id: string;
+  name: string;
+}
+
+export interface UpdateUserInput {
+  email?: string,
+  name?: string,
+  isActive?: boolean
 }

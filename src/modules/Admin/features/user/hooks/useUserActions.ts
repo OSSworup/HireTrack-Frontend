@@ -26,6 +26,11 @@ export function useUserActions(
           });
         }
 
+        await usersApi.assignRole({
+          id: editingUser.id,
+          roleIds: form.roleIds,
+        });
+
         success("User updated");
       } else {
         await usersApi.createUser(form);

@@ -8,13 +8,14 @@ import {
     FormControlLabel,
     Checkbox,
 } from "@mui/material";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import UserForm from "./userForm";
 import type { User, UserFormType } from "../types/types";
 import { useUserForm } from "../hooks/useUserForm";
 import { useToast } from "../../../../../hooks/useToast";
+import { useRoleOptions } from "../../role/hooks/useRoleOptions";
 
 interface UserDialogsProps {
     open: boolean;
@@ -33,7 +34,8 @@ function toForm(user: User): UserFormType {
         email: user.email,
         name: user.name,
         password: "",
-        isActive: user.isActive
+        isActive: user.isActive,
+        roleIds: user.roles.map((role) => role.id),
     }
 }
 
@@ -61,6 +63,12 @@ export default function UserDialogs({
 
     const isSaving = isCreating || isUpdating;
 
+    useEffect(() => {
+        if (open && !editingUser) {
+            formHook.resetForm();
+        }
+    }, [open, editingUser?.id]);
+
     const handleSave = async () => {
         const validationError = formHook.validate(editingUser);
         if (validationError) {
@@ -69,10 +77,17 @@ export default function UserDialogs({
 
         await onSave(formHook.form, editingUser);
 
+        if (!editingUser) {
+            formHook.resetForm();
+        }
+
         if (editingUser || !dialogStaysOpen) {
             onClose();
         }
     };
+
+    const roleOptionsQuery=useRoleOptions();
+    const roleOptions=roleOptionsQuery.data ?? [];
 
 
     return (
@@ -88,6 +103,7 @@ export default function UserDialogs({
                     <UserForm
                         form={formHook.form}
                         update={formHook.update}
+                        roleOptions={roleOptions}
                         passwordMessage={editingId ? "Change Password" : "Set password"}
                     />
                     {editingId === null && (<FormControlLabel label={"Keep Form Open"} control={<Checkbox

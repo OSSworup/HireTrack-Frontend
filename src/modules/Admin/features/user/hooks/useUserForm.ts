@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import type {User, UserFormType } from "../types/types";
 
+const emptyUserForm: UserFormType = {
+  email: "",
+  password: "",
+  name: "",
+  isActive: true,
+  roleIds: [],
+};
 
 export function useUserForm(initial?: UserFormType) {
-  const empty = { email: "", password: "",name:"",isActive:true};
-
-  const [form, setForm] = useState(empty);
+  const [form, setForm] = useState<UserFormType>(emptyUserForm);
 
   useEffect(() => {
     if (initial) {
@@ -13,15 +18,20 @@ export function useUserForm(initial?: UserFormType) {
         email: initial.email,
         password:initial.password,
         name:initial.name,
-        isActive:initial.isActive
+        isActive:initial.isActive,
+        roleIds:initial.roleIds
       });
     } else {
-      setForm(empty);
+      setForm(emptyUserForm);
     }
   }, [initial]);
 
-  function update<K extends keyof typeof form>(key: K, value: typeof form[K]) {
+  function update<K extends keyof UserFormType>(key: K, value: UserFormType[K]) {
     setForm(prev => ({ ...prev, [key]: value }));
+  }
+
+  function resetForm() {
+    setForm(emptyUserForm);
   }
 
   function validate(editingUser?:User) {
@@ -31,5 +41,5 @@ export function useUserForm(initial?: UserFormType) {
     return null;
   }
 
-  return { form, update, validate, setForm };
+  return { form, update, validate, resetForm, setForm };
 }
