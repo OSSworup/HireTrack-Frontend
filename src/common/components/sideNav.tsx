@@ -14,6 +14,8 @@ import SideNavItem from "./sideNavItem";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import BadgeIcon from '@mui/icons-material/Badge';
+import { useAppSelector } from "../../store/hooks";
+import { hasPermissions } from "../util/checkPermission";
 
 const drawerWidth = 260;
 
@@ -29,12 +31,14 @@ type NavChild = {
   label: string;
   icon: ReactNode;
   path: string;
+  permissions?:string[];
 };
 
 type NavSection = {
   label: string;
   icon: ReactNode;
   basePath: string;
+  permissions?:string[];
   children: NavChild[];
 };
 
@@ -44,8 +48,8 @@ const NAV_SECTIONS: NavSection[] = [
     icon: <DashboardIcon />,
     basePath: "/admin",
     children: [
-      { label: "Users", icon: <PeopleIcon />, path: "/admin/users" },
-      {label:"Roles",icon:<BadgeIcon/>,path:"/admin/roles"},
+      { label: "Users", icon: <PeopleIcon />, path: "/admin/users",permissions:["user:list"] },
+      {label:"Roles",icon:<BadgeIcon/>,path:"/admin/roles",permissions:["role:list"]},
     ],
   },
 ];
@@ -60,10 +64,23 @@ export default function SideNav({
   const navigate = useNavigate();
   const location = useLocation();
 
+  const user=useAppSelector((state)=>state.user.user);
+
   const isActive = (path: string) =>
     location.pathname === path || location.pathname.startsWith(path + "/");
 
-  const visibleSections = useMemo(() => NAV_SECTIONS, []);
+  const visibleSections = useMemo(() =>{
+    if (!user) return [];
+
+    return NAV_SECTIONS.map(section=>({
+      ...section,
+      children:section.children.filter(child=>hasPermissions(
+        user.permissions ?? [],
+        child.permissions ??[]
+      )
+    ),
+    })).filter(section=>section.children.length >0);
+  },[user]);
 
   const renderNavList = (isMobile: boolean) => (
     <List sx={{ px: 1, pt: 1 }}>

@@ -4,19 +4,12 @@ import {
   Toolbar,
   Box,
   IconButton,
-  InputAdornment,
-  TextField,
   Avatar,
-  Badge,
-  Tooltip,
   alpha,
 } from "@mui/material";
 
 import {
   Menu as MenuIcon,
-  Search as SearchIcon,
-  Close as CloseIcon,
-  NotificationsOutlined as NotificationsIcon,
   HelpOutlineOutlined as HelpIcon,
 } from "@mui/icons-material";
 import { useState } from "react";
@@ -25,25 +18,23 @@ import { useNavigate } from "react-router-dom";
 // import the Popper-based menu you created
 import ProfileMenuPopper from "./profileMenuPopper";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-// import { clearAuthSession } from "../api/auth/auth.session";
-// import { logout } from "../../store/slices/authSlice";
+import { logout } from "../../store/slices/userSlice";
 
 type Props = { leftOffset: number; onMobileOpen?: () => void };
 
 
 export default function GlobalAppBar({ leftOffset, onMobileOpen }: Props){
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  //const authUser = useAppSelector((state) => state.auth.user);
+  const authUser = useAppSelector((state) => state.user.user);
 
-  // const user = {
-  //   name: authUser?.name ?? "Guest",
-  //   role: authUser?.roles?.[0]?.name ?? "User",
-  //   avatarUrl: undefined,
-  // };
+  const user = {
+    name: authUser?.name ?? authUser?.email ?? "Guest",
+    role: authUser?.roles?.[0] ?? "User",
+    avatarUrl: undefined,
+  };
 
   function handleAvatarToggle(e: React.MouseEvent) {
     e.stopPropagation();
@@ -51,9 +42,9 @@ export default function GlobalAppBar({ leftOffset, onMobileOpen }: Props){
   }
 
   function handleLogout() {
-    //dispatch(logout());
-    //clearAuthSession();
-    navigate("/", { replace: true });
+    dispatch(logout());
+    localStorage.removeItem("accessToken");
+    navigate("/login", { replace: true });
   }
 
   return (
@@ -111,8 +102,7 @@ export default function GlobalAppBar({ leftOffset, onMobileOpen }: Props){
 
             {/* Avatar */}
             <Avatar onClick={handleAvatarToggle}>
-              {/* {user.name.charAt(0)} */}
-              MARK
+              {user.name.charAt(0)}
             </Avatar>
 
           </Box>
@@ -123,8 +113,7 @@ export default function GlobalAppBar({ leftOffset, onMobileOpen }: Props){
         open={profileOpen}
         onClose={() => setProfileOpen(false)}
         onLogout={handleLogout}
-        // user={{ name: user.name, role: user.role, billingCount: 4 }}
-        user={{name:"Mark",role:"ADMIN"}}
+        user={{ name: user.name, role: user.role }}
       />
     </>
   );

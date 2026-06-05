@@ -24,7 +24,7 @@ interface UserDialogsProps {
     editingId: string | null;
     editingUser?: User;
     onClose: () => void;
-    onSave: (form: UserFormType, editingUser?: User) => Promise<void>;
+    onSave: (form: UserFormType, editingUser?: User) => Promise<boolean | void>;
     isCreating: boolean,
     isUpdating: boolean
 }
@@ -75,7 +75,8 @@ export default function UserDialogs({
             return error(validationError);
         }
 
-        await onSave(formHook.form, editingUser);
+        const saved = await onSave(formHook.form, editingUser);
+        if (saved === false) return;
 
         if (!editingUser) {
             formHook.resetForm();

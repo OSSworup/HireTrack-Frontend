@@ -2,24 +2,30 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { AuthLayout } from "../../layout/authLayout";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { loginUser } from "../../../api/userService";
+import { getCurrentUser, loginUser } from "../../../api/userService";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../../store/hooks";
+import { login } from "../../../store/slices/userSlice";
 
 
 export function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate=useNavigate();
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
-    const mutation=useMutation({
-        mutationFn:loginUser,
-        onSuccess:(data)=>{
-            localStorage.setItem("accesToken",data.data.token);
+    const mutation = useMutation({
+        mutationFn: loginUser,
+        onSuccess: async (data) => {
+            localStorage.setItem("accessToken", data.data.token);
+            const currentUser = await getCurrentUser();
+            dispatch(login(currentUser.data));
             console.log("Login Successful");
             navigate("/admin/users")
         },
-        onError:(error)=>{
-            console.log("ERROR:-",error);
+        onError: (error) => {
+            localStorage.removeItem("accessToken");
+            console.log("ERROR:-", error);
         }
     });
 

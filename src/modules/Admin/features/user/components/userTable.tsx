@@ -17,6 +17,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { useAppSelector } from "../../../../../store/hooks";
+import { hasPermissions } from "../../../../../common/util/checkPermission";
 
 interface UserTableProps {
   rows: User[];
@@ -40,6 +42,13 @@ export default function UserTable({
   const [sortModel, setSortModel] = useState<GridSortModel>([
     { field: "createdAt", sort: "desc" },
   ]);
+
+  const user = useAppSelector((state) => state.user.user);
+
+  const canCreateUser = hasPermissions(user?.permissions ?? [], ["user:create"]);
+  const canEditUser = hasPermissions(user?.permissions ?? [], ["user:update"]);
+  const canDeleteUser = hasPermissions(user?.permissions ?? [], ["user:delete"]);
+  const canSeeActions = canEditUser || canDeleteUser;
 
   const columns: GridColDef[] = [
     {
@@ -150,7 +159,10 @@ export default function UserTable({
       valueFormatter: (value) =>
         value ? new Date(value as Date).toLocaleDateString() : "",
     },
-    {
+  ];
+
+  if (canSeeActions) {
+    columns.push({
       field: "actions",
       headerName: "Actions",
       align: "center",
@@ -161,29 +173,33 @@ export default function UserTable({
         const row = params.row as User;
         return (
           <Box sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}>
-            <Tooltip title="Edit">
-              <IconButton
-                size="small"
-              onClick={() => onEdit(row)}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            {canEditUser && (
+              <Tooltip title="Edit">
+                <IconButton
+                  size="small"
+                  onClick={() => onEdit(row)}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
 
-            <Tooltip title="Delete">
-              <IconButton
-                size="small"
-                color="error"
-              onClick={() => onDelete(row)}
-              >
-                <DeleteIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            {canDeleteUser && (
+              <Tooltip title="Delete">
+                <IconButton
+                  size="small"
+                  color="error"
+                  onClick={() => onDelete(row)}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
           </Box>
         );
       },
-    },
-  ];
+    });
+  }
 
   return (
     <Paper
@@ -216,21 +232,23 @@ export default function UserTable({
           sx={{ flex: 1 }}
         />
 
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          size="small"
-          sx={{
-            background: "#161519",
-            height: 40,
-            textTransform: "none",
-            fontWeight: 600,
-            borderRadius: 1,
-          }}
-          onClick={onAddClick}
-        >
-          Add User
-        </Button>
+        {canCreateUser && (
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            size="small"
+            sx={{
+              background: "#161519",
+              height: 40,
+              textTransform: "none",
+              fontWeight: 600,
+              borderRadius: 1,
+            }}
+            onClick={onAddClick}
+          >
+            Add User
+          </Button>
+        )}
       </Box>
 
       <Box sx={{ borderBottom: "1px solid #F0F2F5", mb: 1 }} />

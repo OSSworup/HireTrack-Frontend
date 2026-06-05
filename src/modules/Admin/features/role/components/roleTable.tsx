@@ -22,6 +22,8 @@ import SecurityIcon from '@mui/icons-material/Security';
 
 import CommonTable from "../../../../../common/components/CommonTable";
 import type { Role } from "../types/types";
+import { useAppSelector } from "../../../../../store/hooks";
+import { hasPermissions } from "../../../../../common/util/checkPermission";
 
 interface RoleTableProps {
   rows: Role[];
@@ -114,6 +116,14 @@ export default function RoleTable({
     { field: "createdAt", sort: "desc" },
   ]);
 
+  const user = useAppSelector((state) => state.user.user);
+
+  const canCreateRole = hasPermissions(user?.permissions ?? [], ["role:create"]);
+  const canEditRole = hasPermissions(user?.permissions ?? [], ["role:update"]);
+  const canDeleteRole = hasPermissions(user?.permissions ?? [], ["role:delete"]);
+
+  const canSeeActions = canEditRole || canDeleteRole;
+
   const columns: GridColDef[] = [
     {
       field: "name",
@@ -136,18 +146,18 @@ export default function RoleTable({
       width: 160,
       minWidth: 140,
       sortable: false,
-      renderCell:(params)=>{
-        const permissions=(params.value as Role["permissions"]) ?? [];
+      renderCell: (params) => {
+        const permissions = (params.value as Role["permissions"]) ?? [];
 
         return (
           <Box
-          sx={{
-            display:"flex",
-            alignItems:"center",
-            height:"100%",
-            px:1,
-          }}>
-            <PermissionHoverIcon permissions={permissions}/>
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              height: "100%",
+              px: 1,
+            }}>
+            <PermissionHoverIcon permissions={permissions} />
           </Box>
         );
       }
@@ -206,7 +216,10 @@ export default function RoleTable({
       valueFormatter: (value) =>
         value ? new Date(value as Date).toLocaleDateString() : "",
     },
-    {
+  ];
+
+  if (canSeeActions) {
+    columns.push({
       field: "actions",
       headerName: "Actions",
       align: "center",
@@ -218,13 +231,17 @@ export default function RoleTable({
 
         return (
           <Box sx={{ display: "flex", gap: 0.5, justifyContent: "center" }}>
-            <Tooltip title="Edit">
-              <IconButton size="small" onClick={() => onEdit(row)}>
-                <EditIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
+            {
+              canEditRole && (
+                <Tooltip title="Edit">
+                  <IconButton size="small" onClick={() => onEdit(row)}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )
+            }
 
-            <Tooltip title="Delete">
+            {canDeleteRole && (<Tooltip title="Delete">
               <IconButton
                 size="small"
                 color="error"
@@ -232,12 +249,12 @@ export default function RoleTable({
               >
                 <DeleteIcon fontSize="small" />
               </IconButton>
-            </Tooltip>
+            </Tooltip>)}
           </Box>
         );
       },
-    },
-  ];
+    },)
+  }
 
   return (
     <Paper
@@ -270,21 +287,25 @@ export default function RoleTable({
           sx={{ flex: 1 }}
         />
 
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          size="small"
-          sx={{
-            background: "#161519",
-            height: 40,
-            textTransform: "none",
-            fontWeight: 600,
-            borderRadius: 1,
-          }}
-          onClick={onAddClick}
-        >
-          Add Role
-        </Button>
+        {
+          canCreateRole && (
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              size="small"
+              sx={{
+                background: "#161519",
+                height: 40,
+                textTransform: "none",
+                fontWeight: 600,
+                borderRadius: 1,
+              }}
+              onClick={onAddClick}
+            >
+              Add Role
+            </Button>
+          )
+        }
       </Box>
 
       <Box sx={{ borderBottom: "1px solid #F0F2F5", mb: 1 }} />
