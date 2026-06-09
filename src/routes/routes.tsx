@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "../common/components/auth/login";
 import { Register } from "../common/components/auth/register";
 //import { AdminPage } from "../modules/admin.tsx"
