@@ -6,6 +6,7 @@ import { useRoleActions } from "./hooks/useRoleActions";
 import { useRoleFilters } from "./hooks/useRoleFilters";
 import { useRoles } from "./hooks/useRoles";
 import { useRoleUI } from "./hooks/useRoleUI";
+import TableLoadingSkeleton from "../../../../common/components/TableLoadingSkeleton";
 
 export default function RoleManagementPage() {
   const rolesApi = useRoles();
@@ -16,6 +17,10 @@ export default function RoleManagementPage() {
   const permissionManager=usePermission(permissions);
   const filters = useRoleFilters(roles);
   const actions = useRoleActions(rolesApi);
+
+  if (rolesApi.rolesQuery.isLoading) {
+    return <TableLoadingSkeleton />;
+  }
 
   return (
     <>

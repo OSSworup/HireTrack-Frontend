@@ -1,4 +1,4 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Stack, TextField, Typography } from "@mui/material";
 import { AuthLayout } from "../../layout/authLayout";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -31,6 +31,8 @@ export function Login() {
 
     function submit(event: React.SyntheticEvent) {
         event.preventDefault();
+        if (mutation.isPending) return;
+
         const data={
             "email":email,
             "password":password
@@ -53,6 +55,7 @@ export function Login() {
                         size="small"
                         type="text"
                         value={email}
+                        disabled={mutation.isPending}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
@@ -62,8 +65,18 @@ export function Login() {
                         size="small"
                         type="password"
                         value={password}
+                        disabled={mutation.isPending}
                         onChange={(e) => setPassword(e.target.value)} />
-                    <Button type="submit">Login</Button>
+                    <Button type="submit" disabled={mutation.isPending}>
+                        {mutation.isPending && (
+                            <CircularProgress
+                                size={18}
+                                sx={{ mr: 1 }}
+                                color="inherit"
+                            />
+                        )}
+                        {mutation.isPending ? "Logging in" : "Login"}
+                    </Button>
                 </Stack>
             </form>
         </Box>
