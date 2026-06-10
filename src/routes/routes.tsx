@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "../common/components/auth/login";
-import { Register } from "../common/components/auth/register";
 //import { AdminPage } from "../modules/admin.tsx"
 import AdminRoutes from "../modules/Admin/routes/adminRoutes.tsx";
 import Unauthorized from "../common/components/unauthuraized.tsx";
@@ -13,7 +12,6 @@ export function RouteIndex() {
         <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
             <Route path="/unauthorized" element={<Unauthorized/>} />
             <Route
                 path="/admin/*"

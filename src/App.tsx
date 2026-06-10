@@ -1,11 +1,14 @@
 
 import { ToastContainer } from 'react-toastify';
 import { RouteIndex } from './routes/routes';
+import { AuthBootstrap } from './common/components/auth/authBootstrap';
 
 function App() {
   return (
     <>
-      <RouteIndex />
+      <AuthBootstrap>
+        <RouteIndex />
+      </AuthBootstrap>
       <ToastContainer
         position="top-right"
         autoClose={3000}

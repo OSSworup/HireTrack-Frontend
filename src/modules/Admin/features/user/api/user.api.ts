@@ -11,7 +11,7 @@ export const getUsers = async (): Promise<User[]> => {
 };
 
 export const createUser = async (data: UserFormType) => {
-  const response = await api.post("/user/register", data);
+  const response = await api.post("/user", data);
   return response.data;
 };
 

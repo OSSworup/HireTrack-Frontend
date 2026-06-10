@@ -11,6 +11,6 @@ interface loginUserType {
     password: string,
 }
 
-export const registerUser = (data: registerUserType) => api.post("/user/register", data);
+export const createUser = (data: registerUserType) => api.post("/user/create", data);
 export const loginUser = (data: loginUserType) => api.post("/user/login", data);
 export const getCurrentUser = () => api.get("/user/me");
