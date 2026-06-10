@@ -56,7 +56,7 @@ export default function DeleteDialog({
                 variant="contained"
                 color="error"
                 onClick={handleDelete}
-                sx={{ background: "#161519", height: 36, textTransform: "none", fontWeight: 600, px: 2, borderRadius: 1, "&:hover": { background: "#ff6b35" }, width: { xs: "48%", sm: "auto" }, fontSize: 13 }}
+                sx={{ height: 36, textTransform: "none", fontWeight: 600, px: 2, borderRadius: 1, width: { xs: "48%", sm: "auto" }, fontSize: 13 }}
                 disabled={isDeleting}
             >
                 {

@@ -9,6 +9,7 @@ import {
   Tooltip,
   IconButton,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 
 import CommonTable from "../../../../../common/components/CommonTable";
@@ -91,8 +92,8 @@ export default function UserTable({
                   px: 1,
                   py: 0.35,
                   borderRadius: 1,
-                  backgroundColor: "#F4F3FF",
-                  color: "#5B50D8",
+                  backgroundColor: "#EAF3FF",
+                  color: "#175CD3",
                   fontSize: 12,
                   fontWeight: 600,
                   lineHeight: 1.4,
@@ -211,8 +212,8 @@ export default function UserTable({
         borderRadius: 1.5,
       }}
     >
-      <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.25 }}>
-        Filters
+      <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.25,}}>
+        Users
       </Typography>
 
       <Box
@@ -238,11 +239,17 @@ export default function UserTable({
             startIcon={<AddIcon />}
             size="small"
             sx={{
-              background: "#161519",
+              backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.12),
+              color: "primary.main",
               height: 40,
               textTransform: "none",
               fontWeight: 600,
               borderRadius: 1,
+              boxShadow: "none",
+              "&:hover": {
+                backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.18),
+                boxShadow: "none",
+              },
             }}
             onClick={onAddClick}
           >

@@ -5,6 +5,7 @@ import {
   List,
   IconButton,
   Typography,
+  Box,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
@@ -119,13 +120,32 @@ export default function SideNav({
           display: { xs: "block", lg: "none" },
           "& .MuiDrawer-paper": {
             width: drawerWidth,
+            backgroundColor: "#FAFBFF",
+            borderRight: "1px solid #EDEFF3",
           },
         }}
       >
         <DrawerHeader>
-          <Typography sx={{ ml: 2, fontWeight: 700 }}>
-            HireTrack
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, ml: 2 }}>
+            <Box
+              sx={{
+                width: 30,
+                height: 30,
+                borderRadius: 1,
+                display: "grid",
+                placeItems: "center",
+                bgcolor: "primary.main",
+                color: "primary.contrastText",
+                fontWeight: 800,
+                fontSize: 13,
+              }}
+            >
+              AB
+            </Box>
+            <Typography sx={{ fontWeight: 700, color: "#334155" }}>
+              AccessBoard
+            </Typography>
+          </Box>
 
           <IconButton onClick={onMobileClose}>
             <CloseIcon />
@@ -144,13 +164,32 @@ export default function SideNav({
             width: drawerWidth,
             position: "fixed",
             height: "100vh",
+            backgroundColor: "#FAFBFF",
+            borderRight: "1px solid #EDEFF3",
           },
         }}
       >
         <DrawerHeader>
-          <Typography sx={{ ml: 2, fontWeight: 700 }}>
-            HireTrack
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.25, ml: 2 }}>
+            <Box
+              sx={{
+                width: 30,
+                height: 30,
+                borderRadius: 1,
+                display: "grid",
+                placeItems: "center",
+                bgcolor: "primary.main",
+                color: "primary.contrastText",
+                fontWeight: 800,
+                fontSize: 13,
+              }}
+            >
+              AB
+            </Box>
+            <Typography sx={{ fontWeight: 700, color: "#334155" }}>
+              AccessBoard
+            </Typography>
+          </Box>
         </DrawerHeader>
 
         {renderNavList(false)}

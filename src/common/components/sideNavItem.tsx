@@ -8,6 +8,7 @@ import {
   Box,
   IconButton,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
@@ -70,18 +71,34 @@ export default function SideNavItem({
           mr: 0.5,
           minHeight: "unset",
           py: 1,
+          position: "relative",
           justifyContent: open ? "initial" : "center",
           px: 2.5,
           "&.Mui-selected, &.Mui-selected:hover": {
-            bgcolor: "#161519",
-            color: "white",
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.14),
+            color: "primary.main",
           },
-          color: parentSelected ? "white" : "text.primary",
-          "&:hover": { bgcolor: open ? "action.hover" : undefined },
+          "&::before": parentSelected
+            ? {
+              content: '""',
+              position: "absolute",
+              left: 8,
+              top: 8,
+              bottom: 8,
+              width: 3,
+              borderRadius: 3,
+              bgcolor: "primary.main",
+            }
+            : undefined,
+          color: parentSelected ? "primary.main" : "text.secondary",
+          "&:hover": {
+            bgcolor: open ? (theme) => alpha(theme.palette.primary.main, 0.06) : undefined,
+            color: "primary.main",
+          },
           bgcolor: parentSelected
             ? undefined
             : anyChildActive
-              ? "action.hover"
+              ? (theme) => alpha(theme.palette.primary.main, 0.06)
               : "transparent"
         }}
       >
@@ -90,7 +107,7 @@ export default function SideNavItem({
             minWidth: 0,
             mr: open ? 3 : "auto",
             justifyContent: "center",
-            color: parentSelected ? "white" : "inherit",
+            color: parentSelected ? "primary.main" : "inherit",
           }}
         >
           {icon}
@@ -148,14 +165,30 @@ export default function SideNavItem({
                   mr: 0.5,
                   minHeight: "unset",
                   py: 1,
+                  position: "relative",
                   px: 2.5,
                   justifyContent: "initial",
                   "&.Mui-selected, &.Mui-selected:hover": {
-                    bgcolor: "#161519",
-                    color: "white",
+                    bgcolor: (theme) => alpha(theme.palette.primary.main, 0.14),
+                    color: "primary.main",
                   },
-                  color: c.active ? "white" : "text.primary",
-                  "&:hover": { bgcolor: "action.hover" },
+                  "&::before": c.active
+                    ? {
+                      content: '""',
+                      position: "absolute",
+                      left: 8,
+                      top: 8,
+                      bottom: 8,
+                      width: 3,
+                      borderRadius: 3,
+                      bgcolor: "primary.main",
+                    }
+                    : undefined,
+                  color: c.active ? "primary.main" : "text.secondary",
+                  "&:hover": {
+                    bgcolor: (theme) => alpha(theme.palette.primary.main, 0.06),
+                    color: "primary.main",
+                  },
                 }}
               >
                 <ListItemIcon
@@ -163,7 +196,7 @@ export default function SideNavItem({
                     minWidth: 0,
                     mr: 3,
                     justifyContent: "center",
-                    color: c.active ? "white" : "inherit",
+                    color: c.active ? "primary.main" : "inherit",
                   }}
                 >
                   {c.icon ?? <FiberManualRecordIcon sx={{ fontSize: 10 }} />}
@@ -176,7 +209,7 @@ export default function SideNavItem({
                       sx: {
                         fontSize: "0.875rem",
                         fontWeight: 500,
-                        color: c.active ? "white" : "text.secondary"
+                        color: c.active ? "primary.main" : "text.secondary"
                       }
                     }
                   }}

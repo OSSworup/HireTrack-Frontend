@@ -87,7 +87,7 @@ export default function CommonTable({
                         "& .MuiDataGrid-row": {
                             "&:nth-of-type(odd)": { bgcolor: "#FFFFFF" },
                             "&:nth-of-type(even)": { bgcolor: "#FAFBFF" },
-                            "&:hover": { bgcolor: "rgba(99,102,241,0.03)" },
+                            "&:hover": { bgcolor: "rgba(25,118,210,0.04)" },
                         },
                         "& .MuiDataGrid-cell": {
                             borderBottom: "1px solid #F7F8FA",

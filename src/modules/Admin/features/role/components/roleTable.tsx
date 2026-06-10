@@ -13,6 +13,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import AddIcon from "@mui/icons-material/Add";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -266,8 +267,8 @@ export default function RoleTable({
         borderRadius: 1.5,
       }}
     >
-      <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.25 }}>
-        Filters
+      <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1.25,}}>
+        Roles
       </Typography>
 
       <Box
@@ -294,11 +295,17 @@ export default function RoleTable({
               startIcon={<AddIcon />}
               size="small"
               sx={{
-                background: "#161519",
+              backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                color: "primary.main",
                 height: 40,
                 textTransform: "none",
                 fontWeight: 600,
                 borderRadius: 1,
+                boxShadow: "none",
+                "&:hover": {
+                  backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.18),
+                  boxShadow: "none",
+                },
               }}
               onClick={onAddClick}
             >

@@ -11,6 +11,7 @@ import {
     Paper,
     Typography,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import type { Dispatch, SetStateAction } from "react";
@@ -185,7 +186,7 @@ export default function PermissionDialog({ permissionDialogOpen, setPermissionDi
                                     <Box sx={{ flex: 1, minWidth: 0 }}>
                                         <Typography
                                             variant="body2"
-                                            sx={{ fontWeight: 700, color: "#161519", textTransform: "capitalize" }}
+                                            sx={{ fontWeight: 700, color: "text.primary", textTransform: "capitalize" }}
                                         >
                                             {group.resource}
                                         </Typography>
@@ -266,10 +267,16 @@ export default function PermissionDialog({ permissionDialogOpen, setPermissionDi
                     variant="contained"
                     onClick={() => setPermissionDialogOpen(false)}
                     sx={{
-                        background: "#161519",
+                        backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                        color: "primary.main",
                         textTransform: "none",
                         fontWeight: 600,
                         borderRadius: 1,
+                        boxShadow: "none",
+                        "&:hover": {
+                            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.18),
+                            boxShadow: "none",
+                        },
                     }}
                 >
                     Done

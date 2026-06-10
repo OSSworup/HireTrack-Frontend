@@ -19,8 +19,6 @@ export function RouteGuard({ permissions = [], children }: RouteGuardProps) {
         user.permissions,
         permissions
     );
-
-    console.log(user.permissions,permissions);
     
 
     if (!hasPermission) {

@@ -6,6 +6,7 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
@@ -59,9 +60,28 @@ export default function TablePagination({
             width: 80,
             height: 36,
             borderRadius: 1,
-            bgcolor: "#161519",
-            color: "white",
-            "& .MuiSvgIcon-root": { color: "#fff" },
+            bgcolor: (theme) => alpha(theme.palette.primary.main, 0.12),
+            color: "primary.main",
+
+            "& .MuiSvgIcon-root": {
+              color: "primary.main",
+            },
+
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
+
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
+
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              border: "none",
+            },
+
+            "&:hover": {
+              bgcolor: (theme) => alpha(theme.palette.primary.main, 0.18),
+            },
           }}
         >
           <MenuItem value="5">5</MenuItem>
@@ -93,8 +113,11 @@ export default function TablePagination({
             sx={{
               minWidth: 36,
               height: 36,
-              bgcolor: p === page ? "#161519" : "background.paper",
-              color: p === page ? "white" : "text.primary",
+              bgcolor: p === page ? (theme) => alpha(theme.palette.primary.main, 0.25) : "background.paper",
+              color: p === page ? "primary.main" : "text.primary",
+              "&:hover": {
+                bgcolor: p === page ? (theme) => alpha(theme.palette.primary.main, 0.18) : "action.hover",
+              },
             }}
           >
             {p}

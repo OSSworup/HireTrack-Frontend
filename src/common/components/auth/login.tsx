@@ -1,4 +1,5 @@
 import { Box, Button, CircularProgress, Stack, TextField, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import { AuthLayout } from "../../layout/authLayout";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
@@ -20,7 +21,6 @@ export function Login() {
             localStorage.setItem("accessToken", data.data.token);
             const currentUser = await getCurrentUser();
             dispatch(login(currentUser.data));
-            console.log("Login Successful");
             navigate("/admin/users")
         },
         onError: (error) => {
@@ -41,10 +41,65 @@ export function Login() {
     }
 
     return <AuthLayout>
-        <Box>
-            <Typography variant="h4" sx={{ fontWeight: "600", mb: 1 }}>
-                Welcome to HireTrack
-            </Typography>
+        <Box
+            sx={{
+                width: "100%",
+                maxWidth: 380,
+                p: 3,
+                border: "1px solid #EDEFF3",
+                borderRadius: 1.5,
+                backgroundColor: "#FFFFFF",
+            }}
+        >
+            <Stack spacing={1.25} sx={{ mb: 3.5 }}>
+                <Stack direction="row" spacing={1.25} sx={{ alignItems: "center" }}>
+                    <Box
+                        sx={{
+                            width: 34,
+                            height: 34,
+                            borderRadius: 1,
+                            display: "grid",
+                            placeItems: "center",
+                            bgcolor: "primary.main",
+                            color: "primary.contrastText",
+                            fontWeight: 800,
+                            fontSize: 15,
+                        }}
+                    >
+                        AB
+                    </Box>
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            color: "text.primary",
+                            fontWeight: 750,
+                            lineHeight: 1,
+                        }}
+                    >
+                        AccessBoard
+                    </Typography>
+                </Stack>
+                <Box>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            color: "primary.main",
+                            fontWeight: 700,
+                            lineHeight: 1.35,
+                            mb: 0.5,
+                        }}
+                    >
+                        Access, clearly managed.
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ maxWidth: 310, lineHeight: 1.6 }}
+                    >
+                        Sign in to manage roles, permissions, and team access.
+                    </Typography>
+                </Box>
+            </Stack>
 
             <form onSubmit={(e) => submit(e)}>
                 <Stack spacing={2.5}>
@@ -67,7 +122,24 @@ export function Login() {
                         value={password}
                         disabled={mutation.isPending}
                         onChange={(e) => setPassword(e.target.value)} />
-                    <Button type="submit" disabled={mutation.isPending}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={mutation.isPending}
+                        sx={{
+                            height: 40,
+                            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                            color: "primary.main",
+                            textTransform: "none",
+                            fontWeight: 600,
+                            borderRadius: 1,
+                            boxShadow: "none",
+                            "&:hover": {
+                                backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.18),
+                                boxShadow: "none",
+                            },
+                        }}
+                    >
                         {mutation.isPending && (
                             <CircularProgress
                                 size={18}

@@ -13,6 +13,7 @@ import {
   Button,
   SvgIcon,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
@@ -196,8 +197,11 @@ export default function ProfileMenuFixed({
                     textTransform: "none",
                     fontWeight: 700,
                     py: 0.8,
-                    backgroundColor: "#161519",
-                    "&:hover": { backgroundColor: "#FF6B35" },
+                    backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.12),
+                    color: "primary.main",
+                    "&:hover": {
+                      backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.18),
+                    },
                     boxShadow: "none",
                   }}
                 >

@@ -9,12 +9,12 @@ interface Props {
 export function AuthLayout({ children }: Props) {
 
     return (
-        <Grid container sx={{ height: "100vh", overflow: "hidden" }}>
+        <Grid container sx={{ width: "100vw", minHeight: "100dvh", overflow: "hidden" }}>
             <Grid
                 size={{ xs: 0, lg: 8 }}
                 sx={{
                     display: { xs: "none", lg: "block" },
-                    height: "100%",
+                    minHeight: "100dvh",
                     backgroundColor: "#F4F5FA",
                     backgroundImage: `url(${img})`,
                     backgroundRepeat: "no-repeat",
@@ -29,7 +29,9 @@ export function AuthLayout({ children }: Props) {
                 sx={{
                     display:"flex",
                     alignItems:"center",
-                    justifyContent:"center"
+                    justifyContent:"center",
+                    backgroundColor: "#FAFAFB",
+                    borderLeft: { lg: "1px solid #EDEFF3" },
                 }}>
                 <Box>
                     {children}
